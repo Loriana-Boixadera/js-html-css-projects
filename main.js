@@ -1,4 +1,5 @@
-/* revisar y mejorar */
+// TODO: 1. hacer una funcion que modificque el estado del display
+// de un elemento
 
 var tateti;
 
@@ -7,20 +8,15 @@ var ganadosComputadora = 0;
 var ganadosHumano = 0;
 
 //ids de las celdas en el html
-var IDS = [['ceroCero', 'ceroUno', 'ceroDos'], ['unoCero', 'unoUno', 'unoDos'], ['dosCero', 'dosUno', 'dosDos']];
+var IDS = [['ceroCero', 'ceroUno', 'ceroDos'],
+            ['unoCero', 'unoUno', 'unoDos'],
+            ['dosCero', 'dosUno', 'dosDos']];
 
 /* TATETI */
 
 class Tateti {
     constructor(fichaH, turno) {
-	   this.tablero = [
-           [{ocupada: false, ficha: "", posicion: [0,0]},{ocupada: false, ficha: "", posicion: [0,1]}, {ocupada: false, ficha: "", posicion: [0,2]}],
-           [{ocupada: false, ficha: "", posicion: [1,0]},{ocupada: false, ficha: "", posicion: [1,1]}, {ocupada: false, ficha: "", posicion: [1,2]}],
-           [{ocupada: false, ficha: "", posicion: [2,0]},{ocupada: false, ficha: "", posicion: [2,1]}, {ocupada: false, ficha: "", posicion: [2,2]}]];
-        this.fichaHumano = fichaH;
-        this.fichaComputadora = (fichaH == 'X' )? 'O' : 'X';
-        this.turno = turno, //h humano, c computadora
-        this.jugados = 0;
+	   this.reset(fichaH, turno);
     }
 
 	//métodos
@@ -30,12 +26,19 @@ class Tateti {
     }
 	
 	reset(fichaH, turno){
-		this.tablero = 	[
-            [{ocupada: false, ficha: "", posicion: [0,0]},{ocupada: false, ficha: "", posicion: [0,1]}, {ocupada: false, ficha: "", posicion: [0,2]}],
-            [{ocupada: false, ficha: "", posicion: [1,0]},{ocupada: false, ficha: "", posicion: [1,1]}, {ocupada: false, ficha: "", posicion: [1,2]}],
-            [{ocupada: false, ficha: "", posicion: [2,0]},{ocupada: false, ficha: "", posicion: [2,1]}, {ocupada: false, ficha: "", posicion: [2,2]}]];
-        this.fichaHumano = fichaH;
-		this.fichaComputadora = (fichaH == 'X' )? 'O' : 'X';
+		this.tablero = [
+            [{ocupada: false, ficha: "", posicion: [0,0]},
+             {ocupada: false, ficha: "", posicion: [0,1]},
+             {ocupada: false, ficha: "", posicion: [0,2]}],
+            [{ocupada: false, ficha: "", posicion: [1,0]},
+             {ocupada: false, ficha: "", posicion: [1,1]},
+             {ocupada: false, ficha: "", posicion: [1,2]}],
+            [{ocupada: false, ficha: "", posicion: [2,0]},
+            {ocupada: false, ficha: "", posicion: [2,1]},
+            {ocupada: false, ficha: "", posicion: [2,2]}]
+        ];
+
+		this.setFichaHumano(fichaH);
 		this.turno = turno;
 		this.jugados = 0;
 	}
@@ -57,18 +60,18 @@ class Tateti {
 	  }
 	}
 	
-	mostrarTablero(){
-        console.log("------------------");
-        for (var i = 0; i < this.tablero.length; i++){
-          var f = this.tablero[i];
-          var c1 = f[0].ficha;
-          var c2 = f[1].ficha;
-          var c3 = f[2].ficha;
-          var txt = "|  " + c1 + "  |  " + c2 + "  |  " + c3 + "  |";
-          console.log(txt);
-	    }
-        console.log("------------------");
-    }
+	// mostrarTablero(){
+    //     console.log("------------------");
+    //     for (var i = 0; i < this.tablero.length; i++){
+    //       var f = this.tablero[i];
+    //       var c1 = f[0].ficha;
+    //       var c2 = f[1].ficha;
+    //       var c3 = f[2].ficha;
+    //       var txt = "|  " + c1 + "  |  " + c2 + "  |  " + c3 + "  |";
+    //       console.log(txt);
+	//     }
+    //     console.log("------------------");
+    // }
 	
 	diagonales(){
 	  var res = [];
@@ -100,9 +103,13 @@ class Tateti {
 	}
 	
 	estaTerminado(){
-	  //si para toda fila y toda columna y toda diagonal no hay tres fichas iguales o queda alguna celda vacía entonces no está terminado
-	  //chequear si están todas las celdas ocupadas, en ese caso 	devolver true, está terminado
-	  //si no están todas ocupadas, chequear si hay tres en línea 	en filas, columnas y diagonales
+	  // si para toda fila y toda columna y toda diagonal
+      // no hay tres fichas iguales o queda alguna celda
+      // vacía entonces no está terminado
+	  // chequear si están todas las celdas ocupadas,
+      // en ese caso 	devolver true, está terminado
+	  // si no están todas ocupadas, chequear si hay
+      // tres en línea 	en filas, columnas y diagonales
 	  return tateti.estaLleno() || tateti.hay3EnLinea();
 	}
 
@@ -197,17 +204,21 @@ class Tateti {
 
 /* Jugada humano */
 function jugadaHumano(celda, fila, columna){
-    //antes tenés que ver si no está terminado el juego y si es el turno del jugador
-    //no chequeo si es el turno del jugador
-    //si en algún momento chequeara de quién es el turno, si no fuera del jugador llamaría a la jugada de la computadora.
-    //pero esto pasaría si se clickea una celda, no tiene mucho sentido...
+    // antes tenés que ver si no está terminado el juego
+        // y si es el turno del jugador
+    // no chequeo si es el turno del jugador
+    // si en algún momento chequeara de quién es el turno,
+        // si no fuera del jugador llamaría a la jugada de la
+        // computadora.
+    // pero esto pasaría si se clickea una celda,
+        // no tiene mucho sentido...
 
     if(!tateti.estaTerminado()){
         if (!tateti.estaOcupada(fila, columna)){
             tateti.agregarFicha(tateti.fichaHumano, fila, columna);
             tateti.jugados += 1;
             mostrarCelda(celda, tateti.fichaHumano);
-            tateti.mostrarTablero();
+            //tateti.mostrarTablero();
             
             if(tateti.estaTerminado()){
                 actualizarMarcador('h');
@@ -234,14 +245,23 @@ function jugadaHumano(celda, fila, columna){
 /* Jugada computadora */
 
 function jugadaComputadora(tateti){
-	//se podría modularizar un poco, encapsular y abstraer algunas partes de esta función...
-	//se supone que es el turno de la computadora, no habría otra forma de llegar acá si no, del modo en que está escrito
+	// se podría modularizar un poco, encapsular y abstraer
+        // algunas partes de esta función...
+	// se supone que es el turno de la computadora, no
+        // habría otra forma de llegar acá si no, del
+        // modo en que está escrito
 	if(!tateti.estaTerminado()){
-	//toda esta parte debería estar encapsulada en una función, qué es lo que está haciendo la computadora, elegirCelda()
+	// toda esta parte debería estar encapsulada en una
+        // función, qué es lo que está haciendo la
+        // computadora, elegirCelda()
 
-	//elegir una posicion al azar de entre 	celdasVaciasDeLineasConDosOcupadas(tateti.fichaComputadora); y si es vacío, si no hay ninguna
-	// entonces de celdasVaciasDeLineasConDosOcupadas(tateti.fichaHumano);, es decir si no puede ganar entonces bloquear la posibilidad de ganar del contrario
-	//y si no en la primera desocupada.
+	// elegir una posicion al azar de entre 
+        // celdasVaciasDeLineasConDosOcupadas(tateti.fichaComputadora);
+        // y si es vacío, si no hay ninguna
+	// entonces de celdasVaciasDeLineasConDosOcupadas(tateti.fichaHumano);,
+        // es decir si no puede ganar entonces bloquear
+        // la posibilidad de ganar del contrario
+	// y si no en la primera desocupada.
 		var posicion = tateti.desocupada();
 
 	    var posiblesParaGanar = tateti.celdasVaciasDeLineasConDosOcupadas(tateti.fichaComputadora);
@@ -266,7 +286,7 @@ function jugadaComputadora(tateti){
 		var celda = document.getElementById(IDS[fila][columna]); 
 		mostrarCelda(celda, tateti.fichaComputadora);
 
-        tateti.mostrarTablero();
+        // tateti.mostrarTablero();
         
 		//chequea si con esa jugada se terminó el partido
 		if(tateti.estaTerminado()){
@@ -304,7 +324,9 @@ function mostrarMarcador(){
 }
 
 function limpiarCeldas(){
-	//recorrer los ids de las celdas, y para cada celda, ponerle un espacio como contenido o el número que le corresponde
+	// recorrer los ids de las celdas, y para cada celda,
+    // ponerle un espacio como contenido o el número que
+    // le corresponde
 	var celda;
 	for (var fila of IDS){
 		for (var id of fila){
@@ -326,12 +348,13 @@ function mostrarTurno(tateti){
 function eligeFicha(tipoFicha){
 
     tateti = new Tateti(tipoFicha, 'h');
-        
+    
     var celdas = document.getElementsByClassName("celda");
 
     //mostrar celdas
     for (var c of celdas){
         c.style.display = "inline-block";
+		//  "inline-block": is to display list items horizontally instead of vertically
     }
     
     //ocultar selección de ficha

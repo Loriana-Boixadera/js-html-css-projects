@@ -10,8 +10,10 @@
     
     <section id="ficha">
         <h3>Elige ficha:</h3>
+        
         <a onclick="eligeFicha('X')">X</a>
-        <a onclick="eligeFicha('O')">O</a>
+        <a onclick="eligeFicha('Y')">Y</a>
+        
     </section>
     
     <section id="jugadores">
@@ -22,7 +24,7 @@
     <section id="turno"></section>
     
     <section id="tablero">
-        <a class="celda" id="ceroCero" onclick="jugadaHumano(this, 0, 0)"></a>
+        <div class="celda" id="ceroCero" onclick="jugadaHumano(this, 0, 0)"></div>
         <div class="celda" id="ceroUno" onclick="jugadaHumano(this, 0, 1)"></div>
         <div class="celda" id="ceroDos" onclick="jugadaHumano(this, 0, 2)"></div>
         <div class="celda" id="unoCero" onclick="jugadaHumano(this, 1, 0)"></div>
