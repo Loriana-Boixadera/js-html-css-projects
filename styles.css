@@ -6,7 +6,7 @@ h1, h2, h3 {
 	text-align: center;
     }
 
-#turno {
+#turn {
 	background-color: yellow;
     margin: 10px auto;
     padding: 10px;
@@ -22,7 +22,7 @@ h1, h2, h3 {
 	margin: 30px auto;
     }
 	
-.celda {
+.cell {
     display: none;
     float: left;
     background: #fff;
@@ -41,14 +41,14 @@ h1, h2, h3 {
     clear: both;
 }
 
-#ficha {
+#tile {
     margin: 0 auto;
     text-align: center;
 }
-#ficha h3 {
+#tile h3 {
     margin: 0;
 }
-#ficha a {
+#tile a {
     display: inline-block;
     background: #8f746c;
     padding: 10px;

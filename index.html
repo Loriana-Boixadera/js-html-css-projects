@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ta Te Ti</title>
+    <title>Tic Tac Toe</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-    <h1>Juego Ta Te Ti</h1>
+    <h1>Tic Tac Toe Game</h1>
     
-    <section id="ficha">
-        <h3>Elige ficha:</h3>
+    <section id="tile">
+        <h3>Choose your tile:</h3>
         
-        <a onclick="eligeFicha('X')">X</a>
-        <a onclick="eligeFicha('Y')">Y</a>
+        <a onclick="chooseTile('X')">X</a>
+        <a onclick="chooseTile('O')">O</a>
         
     </section>
     
@@ -21,18 +21,18 @@
         <div id="hum"></div>
     </section>
     
-    <section id="turno"></section>
+    <section id="turn"></section>
     
     <section id="tablero">
-        <div class="celda" id="ceroCero" onclick="jugadaHumano(this, 0, 0)"></div>
-        <div class="celda" id="ceroUno" onclick="jugadaHumano(this, 0, 1)"></div>
-        <div class="celda" id="ceroDos" onclick="jugadaHumano(this, 0, 2)"></div>
-        <div class="celda" id="unoCero" onclick="jugadaHumano(this, 1, 0)"></div>
-        <div class="celda" id="unoUno" onclick="jugadaHumano(this, 1, 1)"></div>
-        <div class="celda" id="unoDos" onclick="jugadaHumano(this, 1, 2)"></div>
-        <div class="celda" id="dosCero" onclick="jugadaHumano(this, 2, 0)"></div>
-        <div class="celda" id="dosUno" onclick="jugadaHumano(this, 2, 1)"></div>
-        <div class="celda" id="dosDos" onclick="jugadaHumano(this, 2, 2)"></div>
+        <div class="cell" id="ceroCero" onclick="humanTurn(this, 0, 0)"></div>
+        <div class="cell" id="ceroUno" onclick="humanTurn(this, 0, 1)"></div>
+        <div class="cell" id="ceroDos" onclick="humanTurn(this, 0, 2)"></div>
+        <div class="cell" id="unoCero" onclick="humanTurn(this, 1, 0)"></div>
+        <div class="cell" id="unoUno" onclick="humanTurn(this, 1, 1)"></div>
+        <div class="cell" id="unoDos" onclick="humanTurn(this, 1, 2)"></div>
+        <div class="cell" id="dosCero" onclick="humanTurn(this, 2, 0)"></div>
+        <div class="cell" id="dosUno" onclick="humanTurn(this, 2, 1)"></div>
+        <div class="cell" id="dosDos" onclick="humanTurn(this, 2, 2)"></div>
     </section>
     
     <section class="marcador">
