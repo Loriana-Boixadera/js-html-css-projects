@@ -1,4 +1,4 @@
-# Documentation of Ta Te Ti Game
+# Documentation of Tic Tac Toe Game
 
 ...
 

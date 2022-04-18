@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tic Tac Toe</title>
+    <title>Tic Tac Toe Game</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
@@ -16,30 +16,34 @@
         
     </section>
     
-    <section id="jugadores">
+    <section id="players">
         <div id="comp"></div>
         <div id="hum"></div>
     </section>
     
     <section id="turn"></section>
     
-    <section id="tablero">
-        <div class="cell" id="ceroCero" onclick="humanTurn(this, 0, 0)"></div>
-        <div class="cell" id="ceroUno" onclick="humanTurn(this, 0, 1)"></div>
-        <div class="cell" id="ceroDos" onclick="humanTurn(this, 0, 2)"></div>
-        <div class="cell" id="unoCero" onclick="humanTurn(this, 1, 0)"></div>
-        <div class="cell" id="unoUno" onclick="humanTurn(this, 1, 1)"></div>
-        <div class="cell" id="unoDos" onclick="humanTurn(this, 1, 2)"></div>
-        <div class="cell" id="dosCero" onclick="humanTurn(this, 2, 0)"></div>
-        <div class="cell" id="dosUno" onclick="humanTurn(this, 2, 1)"></div>
-        <div class="cell" id="dosDos" onclick="humanTurn(this, 2, 2)"></div>
+    <section id="board">
+        <div class="cell" id="zeroZero" onclick="humanTurn(this, 0, 0)"></div>
+        <div class="cell" id="zeroOne" onclick="humanTurn(this, 0, 1)"></div>
+        <div class="cell" id="zeroTwo" onclick="humanTurn(this, 0, 2)"></div>
+        <div class="cell" id="oneZero" onclick="humanTurn(this, 1, 0)"></div>
+        <div class="cell" id="oneOne" onclick="humanTurn(this, 1, 1)"></div>
+        <div class="cell" id="oneTwo" onclick="humanTurn(this, 1, 2)"></div>
+        <div class="cell" id="twoZero" onclick="humanTurn(this, 2, 0)"></div>
+        <div class="cell" id="twoOne" onclick="humanTurn(this, 2, 1)"></div>
+        <div class="cell" id="twoTwo" onclick="humanTurn(this, 2, 2)"></div>
     </section>
     
-    <section class="marcador">
-        <section id="ganadosH"></section>
-        <section id="ganadosC"></section>
-        <section id="empate"></section>
+    <section class="scoreboard">
+        <section id="winnedH"></section>
+        <section id="winnedC"></section>
+        <section id="tie"></section>
     </section>
+
+    <!-- <section class="restartGame">
+        <a onclick="">Restart Game</a>
+    </section> -->
 
     <script src='main.js'></script>
 

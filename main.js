@@ -1,55 +1,51 @@
-// TODO: 1. hacer una funcion que modificque el estado del display
-// de un elemento
+var tictactoe;
 
-var tateti;
+var ties = 0;
+var winnedComputer = 0;
+var winnedHuman = 0;
 
-var empates = 0;
-var ganadosComputadora = 0;
-var ganadosHumano = 0;
+var CELL_ID = [['zeroZero', 'zeroOne', 'zeroTwo'],
+            ['oneZero', 'oneOne', 'oneTwo'],
+            ['twoZero', 'twoOne', 'twoTwo']];
 
-//ids de las celdas en el html
-var CELL_ID = [['ceroCero', 'ceroUno', 'ceroDos'],
-            ['unoCero', 'unoUno', 'unoDos'],
-            ['dosCero', 'dosUno', 'dosDos']];
+/* TicTacToe */
 
-/* TATETI */
-
-class Tateti {
-    constructor(fichaH, turn) {
-	   this.reset(fichaH, turn);
+class Tictactoe {
+    constructor(tileH, turn) {
+	   this.reset(tileH, turn);
     }
 
-	//métodos
-    setFichaHumano(tile){
-      this.fichaHumano = tile;
-      this.fichaComputadora = (tile == 'X' )? 'O' : 'X';
+	// Methods
+    setHumanTile(tile){
+      this.humanTile = tile;
+      this.computerTile = (tile == 'X' )? 'O' : 'X';
     }
 	
-	reset(fichaH, turn){
-		this.tablero = [
-            [{busy: false, tile: "", posicion: [0,0]},
-             {busy: false, tile: "", posicion: [0,1]},
-             {busy: false, tile: "", posicion: [0,2]}],
-            [{busy: false, tile: "", posicion: [1,0]},
-             {busy: false, tile: "", posicion: [1,1]},
-             {busy: false, tile: "", posicion: [1,2]}],
-            [{busy: false, tile: "", posicion: [2,0]},
-            {busy: false, tile: "", posicion: [2,1]},
-            {busy: false, tile: "", posicion: [2,2]}]
+	reset(tileH, turn){
+		this.board = [
+            [{busy: false, tile: "", position: [0,0]},
+             {busy: false, tile: "", position: [0,1]},
+             {busy: false, tile: "", position: [0,2]}],
+            [{busy: false, tile: "", position: [1,0]},
+             {busy: false, tile: "", position: [1,1]},
+             {busy: false, tile: "", position: [1,2]}],
+            [{busy: false, tile: "", position: [2,0]},
+            {busy: false, tile: "", position: [2,1]},
+            {busy: false, tile: "", position: [2,2]}]
         ];
 
-		this.setFichaHumano(fichaH);
+		this.setHumanTile(tileH);
 		this.turn = turn;
-		this.jugados = 0;
+		this.played = 0;
 	}
 
-	addTile(typeTile, fila, columna){
-	  this.tablero[fila][columna].busy = true;
-	  this.tablero[fila][columna].tile = typeTile;
+	addTile(typeTile, row, column){
+	  this.board[row][column].busy = true;
+	  this.board[row][column].tile = typeTile;
 	}
 	  
-	areBusy(fila, columna){
-	  return this.tablero[fila][columna].busy;
+	areBusy(row, column){
+	  return this.board[row][column].busy;
 	}
 	
 	changeTurn(){
@@ -60,71 +56,58 @@ class Tateti {
 		}
 	}
 	
-	// muestra en consola
-	// mostrarTablero(){
-    //     console.log("------------------");
-    //     for (var i = 0; i < this.tablero.length; i++){
-    //       var f = this.tablero[i];
-    //       var c1 = f[0].tile;
-    //       var c2 = f[1].tile;
-    //       var c3 = f[2].tile;
-    //       var txt = "|  " + c1 + "  |  " + c2 + "  |  " + c3 + "  |";
-    //       console.log(txt);
-	//     }
-    //     console.log("------------------");
-    // }
-	
-	diagonales(){
-		// res = [diagPrincipal, diagSecundaria]
+	diagonals(){
+		// res = [mainDiagonal, sideDiagonal]
 		var res = [[],[]];
 
-		// diagonalPrincipal
-		res[0].push(this.tablero[0][0]);
-		res[0].push(this.tablero[1][1]);
-		res[0].push(this.tablero[2][2]);
-		// diagonalSecundaria
-		res[1].push(this.tablero[0][2]);
-		res[1].push(this.tablero[1][1]);
-		res[1].push(this.tablero[2][0]);
+		// mainDiagonal
+		res[0].push(this.board[0][0]);
+		res[0].push(this.board[1][1]);
+		res[0].push(this.board[2][2]);
+		// sideDiagonal
+		res[1].push(this.board[0][2]);
+		res[1].push(this.board[1][1]);
+		res[1].push(this.board[2][0]);
 		return res;
 	}
 	
 	getColumn(n){
 		var res = [];
-		for (var f of this.tablero){
-		res.push(f[n]);
+		for (var f of this.board){
+			res.push(f[n]);
 		}
 		return res;
 	}
 	
-	columnas(){
+	columns(){
 	  var res = [];
 	  res.push(this.getColumn(0));
 	  res.push(this.getColumn(1));
-	  res.push(this.getColumn(2));	  
+	  res.push(this.getColumn(2));
 	  return res;
 	}
 	
 	isFinished(){
-	  return tateti.isFull() || tateti.hay3EnLinea();
+	  return tictactoe.isFull() || tictactoe.are3InLine();
 	}
 
     isFull(){
-		return this.jugados >= 9;
+		return this.played >= 9;
 	}
 
-    hay3EnLinea(){
-		var lineas = this.columnas().concat(this.tablero).concat(this.diagonales());
+    are3InLine(){
+		var lineas = this.columns().concat(this.board).concat(this.diagonals());
 		for (var linea of lineas){
-			if(this.hay3Iguales(linea)){
+			if(this.are3Equals(linea)){
 				return true;
 			}
 		}
 		return false;
 	}
     
+	// Todo: Understand the following function
     celdasVaciasDeLineasConDosOcupadas(tile){
-    	var lineas = this.columnas().concat(this.tablero).concat(this.diagonales());
+    	var lineas = this.columns().concat(this.board).concat(this.diagonals());
     	var res = [];
     	for (var linea of lineas){
     		var tiene = this.tieneUnaSolaDesocupada(linea, tile); //espero un array vacío o uno no vacío con dos elementos correspondientes a una posición de celda del tablero
@@ -138,7 +121,7 @@ class Tateti {
     tieneUnaSolaDesocupada(linea, typeTile){
     	//revisar y reescribir
     	var count = 0;
-    	var posicion = [];
+    	var position = [];
     	for (var cell of linea){
     		if (cell.busy){
     			if (cell.tile === typeTile){
@@ -146,17 +129,17 @@ class Tateti {
     			}
     		} else {
     			//guardar la celda desocupada
-    			posicion = cell.posicion;
+    			position = cell.position;
     		}
     	}
     	if (count === 2){
-    		return posicion;
+    		return position;
     	} else {
     		return [];
     	}
     }
 
-	hay3Iguales(linea){
+	are3Equals(linea){
 		//revisar y reescribir para mejor legibilidad
 		var count = 0;
 		var tile = "";
@@ -181,13 +164,13 @@ class Tateti {
 	
     getIdleCell(){
 	  //busca y devuelve una celda desocupada
-	  var posicion = [];//un par ordenado de fila, columna
-	  for (var i = 0; i < this.tablero.length; i++){
-	    var f = this.tablero[i];	    
+	  var position = [];//un par ordenado de row, column
+	  for (var i = 0; i < this.board.length; i++){
+	    var f = this.board[i];	    
 	    for (var j = 0; j < f.length; j++){
 	      if(!this.areBusy(i,j)){
-			posicion = [i, j];
-			return posicion; //devuelve la primera que encuentra
+			position = [i, j];
+			return position; //devuelve la primera que encuentra
 	      }
 	    }
 	  }
@@ -195,134 +178,113 @@ class Tateti {
 };
 
 
-/* manejar los eventos de la página */
+/* Events on the .html */
 
-/* Jugada humano */
-function humanTurn(cell, fila, columna){
-    // antes tenés que ver si no está terminado el juego
-        // y si es el turno del jugador
-    // no chequeo si es el turno del jugador
-    // si en algún momento chequeara de quién es el turno,
-        // si no fuera del jugador llamaría a la jugada de la
-        // computadora.
-    // pero esto pasaría si se clickea una celda,
-        // no tiene mucho sentido...
-
-    if(!tateti.isFinished()){
-        if (!tateti.areBusy(fila, columna)){
-            tateti.addTile(tateti.fichaHumano, fila, columna);
-            tateti.jugados += 1;
-            displayCell(cell, tateti.fichaHumano);
-            //tateti.mostrarTablero();
+/* Human played */
+function humanTurn(cell, row, column){
+    if(!tictactoe.isFinished()){
+        if (!tictactoe.areBusy(row, column)){
+            tictactoe.addTile(tictactoe.humanTile, row, column);
+            tictactoe.played += 1;
+            displayCell(cell, tictactoe.humanTile);
             
-            if(tateti.isFinished()){
-                updateMarker('h');
-                // console.log("terminó Humano");
-       	        tateti.reset(tateti.fichaHumano, 'h'); 
+            if(tictactoe.isFinished()){
+                updateScoreboard('h');
+       	        tictactoe.reset(tictactoe.humanTile, 'h'); 
                 //se mantiene la misma ficha que tenía al principio.
                 //podría haber una función que elija al azar a quién le toca el turno
        	        cleanCells();
-			    displayTurn(tateti);
-                displayMarker();
-                // console.log("Humano: " + ganadosHumano + ". Computadora: " + ganadosComputadora + ". Empates: " + empates);
+			    displayTurn(tictactoe);
+                displayScoreboard();
             } else {
-                tateti.changeTurn();
-                displayTurn(tateti);
-                // console.log("turn: " + tateti.turn);
-                jugadaComputadora(tateti);
+                tictactoe.changeTurn();
+                displayTurn(tictactoe);
+                jugadaComputadora(tictactoe);
 		    }
-        } 
-		// else {
-        //     console.log('busy');
-        // }
+        }
     }
 }
 
 /* Jugada computadora */
 
-function jugadaComputadora(tateti){
+function jugadaComputadora(tictactoe){
 	// se podría modularizar un poco, encapsular y abstraer
         // algunas partes de esta función...
 	// se supone que es el turno de la computadora, no
         // habría otra forma de llegar acá si no, del
         // modo en que está escrito
-	if(!tateti.isFinished()){
+	if(!tictactoe.isFinished()){
 	// toda esta parte debería estar encapsulada en una
         // función, qué es lo que está haciendo la
         // computadora, elegirCelda()
 
 	// elegir una posicion al azar de entre 
-        // celdasVaciasDeLineasConDosOcupadas(tateti.fichaComputadora);
+        // celdasVaciasDeLineasConDosOcupadas(tictactoe.computerTile);
         // y si es vacío, si no hay ninguna
-	// entonces de celdasVaciasDeLineasConDosOcupadas(tateti.fichaHumano);,
+	// entonces de celdasVaciasDeLineasConDosOcupadas(tictactoe.humanTile);,
         // es decir si no puede ganar entonces bloquear
         // la posibilidad de ganar del contrario
 	// y si no en la primera desocupada.
-		var posicion = tateti.getIdleCell();
+		var position = tictactoe.getIdleCell();
 
-	    var posiblesParaGanar = tateti.celdasVaciasDeLineasConDosOcupadas(tateti.fichaComputadora);
-	    var posiblesParaBloquear = tateti.celdasVaciasDeLineasConDosOcupadas(tateti.fichaHumano);
+	    var posiblesParaGanar = tictactoe.celdasVaciasDeLineasConDosOcupadas(tictactoe.computerTile);
+	    var posiblesParaBloquear = tictactoe.celdasVaciasDeLineasConDosOcupadas(tictactoe.humanTile);
 
 	    if (posiblesParaGanar.length >= 1){
-	    	posicion = posiblesParaGanar[Math.floor(Math.random()* posiblesParaGanar.length)];//elijo al azar una de las celdas
+	    	position = posiblesParaGanar[Math.floor(Math.random()* posiblesParaGanar.length)];//elijo al azar una de las celdas
 		} else if (posiblesParaBloquear.length >= 1){
-			posicion = posiblesParaBloquear[Math.floor(Math.random()* posiblesParaBloquear.length)];//elijo al azar una de las celdas
+			position = posiblesParaBloquear[Math.floor(Math.random()* posiblesParaBloquear.length)];//elijo al azar una de las celdas
 		} else {
 			//antes de dejar que elija cualquiera desocupada, ver si está libre la del medio, la (1,1)
-			if (!tateti.areBusy(1,1)) posicion = [1,1];
+			if (!tictactoe.areBusy(1,1)) position = [1,1];
 		}
 		
 		//una vez que eligió, pone la ficha en el tablero.
-	    var fila = posicion[0];
-		var columna = posicion[1];
-		tateti.addTile(tateti.fichaComputadora, fila, columna);
-		tateti.jugados +=1; //esta acción tal vez tendría que hacerse dentro de agregar ficha 
+	    var row = position[0];
+		var column = position[1];
+		tictactoe.addTile(tictactoe.computerTile, row, column);
+		tictactoe.played +=1; //esta acción tal vez tendría que hacerse dentro de agregar ficha 
 	
 		//una vez agregada, se muestra en la página
-		var cell = document.getElementById(CELL_ID[fila][columna]); 
-		displayCell(cell, tateti.fichaComputadora);
-
-        // tateti.mostrarTablero();
+		var cell = document.getElementById(CELL_ID[row][column]); 
+		displayCell(cell, tictactoe.computerTile);
         
 		//chequea si con esa jugada se terminó el partido
-		if(tateti.isFinished()){
-            updateMarker('c');
-			// console.log("terminó Computadora");
-			tateti.reset(tateti.fichaHumano, 'h');//¿habría otra manera de no tener el reset en 2 lugares?
+		if(tictactoe.isFinished()){
+            updateScoreboard('c');
+			tictactoe.reset(tictactoe.humanTile, 'h');//¿habría otra manera de no tener el reset en 2 lugares?
 			cleanCells();
-			displayTurn(tateti);
-            displayMarker();
-            // console.log("Humano: " + ganadosHumano + ". Computadora: " + ganadosComputadora + ". Empates: " + empates);
+			displayTurn(tictactoe);
+            displayScoreboard();
 		} else {
-			tateti.changeTurn();
-			displayTurn(tateti);
-			// console.log("turn: " + tateti.turn);
+			tictactoe.changeTurn();
+			displayTurn(tictactoe);
 		}
 	}
 }
 
-function updateMarker(quienTermino){
-    if (tateti.hay3EnLinea()){
-        (quienTermino == 'h')? ganadosHumano++ : ganadosComputadora++;
+function updateScoreboard(quienTermino){
+    if (tictactoe.are3InLine()){
+        (quienTermino == 'h')? winnedHuman++ : winnedComputer++;
     } else {
-        empates++;
+        ties++;
     }    
 }
 
-function displayMarker(){
-    var ganadosH = document.getElementById('ganadosH');
-    var ganadosC = document.getElementById('ganadosC');
-    var empate = document.getElementById('empate');
+function displayScoreboard(){
+    var winnedH = document.getElementById('winnedH');
+    var winnedC = document.getElementById('winnedC');
+    var tie = document.getElementById('tie');
     
-    ganadosC.textContent = "Computadora: " + ganadosComputadora;
-    ganadosH.textContent = "Humano: " + ganadosHumano;
-    empate.textContent = "Empate: " + empates;
+    winnedC.textContent = "Computer: " + winnedComputer;
+    winnedH.textContent = "Human: " + winnedHuman;
+    tie.textContent = "Tie: " + ties;
 }
 
 function cleanCells(){
 	var cell;
-	for (var fila of CELL_ID){
-		for (var id of fila){
+	for (var row of CELL_ID){
+		for (var id of row){
 			cell = document.getElementById(id);
 			cell.textContent = "";
 		}		
@@ -333,19 +295,19 @@ function displayCell(cell, tile){
 	cell.textContent = tile;
 }
 
-function displayTurn(tateti){
+function displayTurn(tictactoe){
 	var display = document.getElementById('turn');
-	display.textContent = 'Turno: ' + tateti.turn;
+	display.textContent = 'Turn: ' + tictactoe.turn;
 }
 
 function chooseTile(typeTile){
 
-    tateti = new Tateti(typeTile, 'h');
+    tictactoe = new Tictactoe(typeTile, 'h');
     
-    var celdas = document.getElementsByClassName("cell");
+    var cells = document.getElementsByClassName("cell");
 
     //mostrar celdas
-    for (var c of celdas){
+    for (var c of cells){
         c.style.display = "inline-block";
 		//  "inline-block": is to display list items horizontally instead of vertically
     }
@@ -354,19 +316,23 @@ function chooseTile(typeTile){
     var tile = document.getElementById("tile");
     tile.style.display = "none";
     
-    //mostrar jugadores, turno y marcador
+	
+
+    //mostrar jugadores, turno y scoreboard
     var hum = document.getElementById("hum");
     var comp = document.getElementById("comp");
     var turn = document.getElementById("turn");
-    var marcador = document.getElementsByClassName('marcador')[0];
+    var scoreboard = document.getElementsByClassName('scoreboard')[0];
+	// var restartGame = document.getElementsByClassName('estartGame')[0];
     
-    hum.textContent = "Human play to " + tateti.fichaHumano;
-    comp.textContent = "Computer play to " + tateti.fichaComputadora; 
-    turn.textContent = "Turn " + tateti.turn;
-     
-    jugadores.style.display = "block";
+    hum.textContent = "Human play to " + tictactoe.humanTile;
+    comp.textContent = "Computer play to " + tictactoe.computerTile; 
+    turn.textContent = "Turn " + tictactoe.turn;
+	
+    players.style.display = "block";
     turn.style.display = "block";
-    marcador.style.display = "block";
+    scoreboard.style.display = "block";
+	// restartGame.style.display = "block";
     
-    displayMarker();
+    displayScoreboard();
 }

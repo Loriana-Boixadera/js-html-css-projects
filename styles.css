@@ -1,9 +1,10 @@
 body {
-	background-color: #209920;
+	background-color: #252925;
     }
 
-h1, h2, h3 {
+h1, h3 {
 	text-align: center;
+    color:#fff;
     }
 
 #turn {
@@ -16,7 +17,7 @@ h1, h2, h3 {
     display: none;
     }
 
-#tablero {
+#board {
 	height: 248px;
 	width: 248px;
 	margin: 30px auto;
@@ -30,12 +31,15 @@ h1, h2, h3 {
 	width: 80px;
 	border: solid 1px gray;
     font-size: 20pt;
+
     text-align: center;
+    line-height: 80px;
+    vertical-align: middle;
 	}
 
 /* clear para los floats */
 
-#tablero:after {
+#board:after {
     display: block;
     content: "";
     clear: both;
@@ -57,15 +61,24 @@ h1, h2, h3 {
     cursor: pointer;
 }
 
-#jugadores {
+#players {
     display: none;
     margin: 0 auto;
     text-align: center;
+    color:#fff;
     font-size: 15pt;
     font-weight: bold;
 }
 
-.marcador {
+.scoreboard {
     display: none;
+    color:#fff;
     margin-left: 30px;
 }
+/* 
+.restartGame {
+    display: none;
+    color:#fff;
+    text-align: right;
+    margin-right: 30px;
+} */
