@@ -2,25 +2,26 @@
 <html>
 <head>
     <title>Tic Tac Toe Game</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="prueba.css">
 </head>
 
 <body>
     <h1>Tic Tac Toe Game</h1>
+    <section class="spinner"></section>
     
-    <section id="tile">
+    <!-- <section id="tile">
         <h3>Choose your tile:</h3>
         
         <a onclick="chooseTile('X')">X</a>
         <a onclick="chooseTile('O')">O</a>
         
-    </section>
+    </section> -->
     
     <section id="players">
         <div id="comp"></div>
         <div id="hum"></div>
     </section>
-    
+
     <section id="turn"></section>
     
     <section id="board">
@@ -34,19 +35,8 @@
         <div class="cell" id="twoOne" onclick="humanTurn(this, 2, 1)"></div>
         <div class="cell" id="twoTwo" onclick="humanTurn(this, 2, 2)"></div>
     </section>
-    
-    <section class="scoreboard">
-        <section id="winnedH"></section>
-        <section id="winnedC"></section>
-        <section id="tie"></section>
-    </section>
 
-    <!-- Para restaurar el juego y volver a empezar, eligiendo otra ficha-->
-    <!-- <section class="restartGame">
-        <a onclick="">Restart Game</a>
-    </section> -->
-
-    <script src='main.js'></script>
+    <!-- ... -->
 
 </body>
 </html>
