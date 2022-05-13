@@ -45,9 +45,9 @@ class Tictactoe {
 		this.played = 0;
 	}
 
-	addTile(typeTile, row, column){
+	addTile(tileType, row, column){
 		this.board[row][column].busy = true;
-		this.board[row][column].tile = typeTile;
+		this.board[row][column].tile = tileType;
 	}
 
 	isBusy(row, column){
@@ -96,24 +96,23 @@ class Tictactoe {
 	}
 
     are3InLine(){
-		var inline_tiles = this.getColumns().concat(this.board).concat(this.getDiagonals());
-		for (var linea of inline_tiles){
-			if(this.are3Equals(linea)){
+		var lines = this.getColumns().concat(this.board).concat(this.getDiagonals());
+		for (var line of lines){
+			if(this.are3Equals(line)){
 				return true;
 			}
 		}
 		return false;
 	}
     
-	// Todo: Understand the following function
-    celdasVaciasDeinline_tilesConDosOcupadas(tile){
-    	var inline_tiles = this.getColumns().concat(this.board).concat(this.getDiagonals());
+    celdasVaciasDelineasConDosOcupadas(tile){
+    	var lines = this.getColumns().concat(this.board).concat(this.getDiagonals());
 		
     	var res = [];
-    	for (var linea of inline_tiles){
-    		var tiene = this.tieneUnaSolaDesocupada(linea, tile); 
-			// espero un array vacío o uno no vacío con dos elementos correspondientes
-			// a una posición de celda del tablero
+    	for (var line of lines){
+    		var tiene = this.tieneUnaSolaDesocupada(line, tile); 
+			// espero un array vacío o uno no vacío con dos elementos
+			// correspondientes a una posición de celda del tablero
     		if (tiene.length !== 0){
     			res.push(tiene);
     		}
@@ -121,12 +120,12 @@ class Tictactoe {
     	return res;
     }
 
-    tieneUnaSolaDesocupada(linea, typeTile){
+    tieneUnaSolaDesocupada(line, tileType){
     	var count = 0;
     	var position = [];
-    	for (var cell of linea){
+    	for (var cell of line){
     		if (cell.busy){
-    			if (cell.tile === typeTile){
+    			if (cell.tile === tileType){
     				count++;
     			}
     		} else {
@@ -140,10 +139,10 @@ class Tictactoe {
     	}
     }
 
-	are3Equals(linea){
+	are3Equals(line){
 		var count = 0;
-		var tile = "";
-		for (var cell of linea){
+		var tile;
+		for (var cell of line){
 			if (cell.busy){
 				if (tile !== ""){
 					if(tile === cell.tile){
@@ -169,7 +168,7 @@ class Tictactoe {
 			for (var j = 0; j < f.length; j++){
 				if(!this.isBusy(i,j)){
 					position = [i, j];
-					return position; // devuelve la primera que encuentra
+					return position; // devuelve la primera celda desocupada que encuentra
 				}
 			}
 		}
@@ -197,8 +196,11 @@ function humanTurn(cell, row, column){
                 tictactoe.changeTurn();
                 displayTurn(tictactoe);
 
+				// ejecutar evento para que muestre que la computadora esta "pensando"
+					// setear el board para que el humano no pueda disparar el evento humanTurn 
+					// mientras jeuga la pc
 				// setTimeout(() => {
-				// 	display
+				// 	computerTurn(tictactoe);
 				// }, 3000);
 
                 computerTurn(tictactoe);
@@ -216,16 +218,16 @@ function computerTurn(tictactoe){
         // computadora, elegirCelda()
 
 	// elegir una posicion al azar de entre 
-        // celdasVaciasDeinline_tilesConDosOcupadas(tictactoe.computerTile);
+        // celdasVaciasDelineasConDosOcupadas(tictactoe.computerTile);
         // y si es vacío, si no hay ninguna
-	// entonces de celdasVaciasDeinline_tilesConDosOcupadas(tictactoe.humanTile);,
+	// entonces de celdasVaciasDelineasConDosOcupadas(tictactoe.humanTile);,
         // es decir si no puede ganar entonces bloquear
         // la posibilidad de ganar del contrario
 	// y si no en la primera desocupada.
 		var position = tictactoe.getIdleCell();
 
-	    var posiblesParaGanar = tictactoe.celdasVaciasDeinline_tilesConDosOcupadas(tictactoe.computerTile);
-	    var posiblesParaBloquear = tictactoe.celdasVaciasDeinline_tilesConDosOcupadas(tictactoe.humanTile);
+	    var posiblesParaGanar = tictactoe.celdasVaciasDelineasConDosOcupadas(tictactoe.computerTile);
+	    var posiblesParaBloquear = tictactoe.celdasVaciasDelineasConDosOcupadas(tictactoe.humanTile);
 
 	    if (posiblesParaGanar.length >= 1){
 	    	position = posiblesParaGanar[
@@ -253,7 +255,7 @@ function computerTurn(tictactoe){
 		//chequea si con esa jugada se terminó el partido
 		if(tictactoe.isFinished()){
             updateScoreboard('c');
-			tictactoe.reset(tictactoe.humanTile, 'h');//¿habría otra manera de no tener el reset en 2 lugares?
+			tictactoe.reset(tictactoe.humanTile, 'h');
 			cleanCells();
 			displayTurn(tictactoe);
             displayScoreboard();
@@ -301,24 +303,25 @@ function displayTurn(tictactoe){
 	display.textContent = 'Turn: ' + tictactoe.turn;
 }
 
-function chooseTile(typeTile){
+function chooseTile(tileType){
 
-    tictactoe = new Tictactoe(typeTile, 'h');
+    tictactoe = new Tictactoe(tileType, 'h');
     
     var cells = document.getElementsByClassName("cell");
 
     //mostrar celdas
     for (var c of cells){
         c.style.display = "inline-block";
-		//  "inline-block": is to display list items horizontally instead of vertically
+		//  "inline-block": is to display list items
+		// 				horizontally instead of vertically
     }
     
     //ocultar selección de ficha
     var tile = document.getElementById("tile");
     tile.style.display = "none";
     
-	
 
+	
     //mostrar jugadores, turno y scoreboard
     var hum = document.getElementById("hum");
     var comp = document.getElementById("comp");
