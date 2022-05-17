@@ -2,5 +2,5 @@
 
 ...
 
-Source of code: <a href="https://codepen.io/zdflower/pen/RgGeqy" target="_blank">codepen.io</a>
+Source of code: [codepen.io](blank:#https://codepen.io/zdflower/pen/RgGeqy)
 
