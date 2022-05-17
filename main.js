@@ -55,7 +55,7 @@ class Tictactoe {
 	}
 	
 	changeTurn(){
-		this.turn == 'c' ? 'h' : 'c'
+		this.turn = this.turn === 'c' ? 'h' : 'c'
 	}
 	
 	getDiagonals(){
@@ -141,7 +141,7 @@ class Tictactoe {
 
 	are3Equals(line){
 		var count = 0;
-		var tile;
+		var tile = "";
 		for (var cell of line){
 			if (cell.busy){
 				if (tile !== ""){
@@ -181,31 +181,28 @@ class Tictactoe {
 /* Human played */
 function humanTurn(cell, row, column){
     if(!tictactoe.isFinished()){
-        if (!tictactoe.isBusy(row, column)){
-            tictactoe.addTile(tictactoe.humanTile, row, column);
-            tictactoe.played += 1;
-            displayCell(cell, tictactoe.humanTile);
-            
-            if(tictactoe.isFinished()){
-                updateScoreboard('h');
-       	        tictactoe.reset(tictactoe.humanTile, 'h');
-       	        cleanCells();
-			    displayTurn(tictactoe);
-                displayScoreboard();
-            } else {
-                tictactoe.changeTurn();
-                displayTurn(tictactoe);
-
-				// ejecutar evento para que muestre que la computadora esta "pensando"
-					// setear el board para que el humano no pueda disparar el evento humanTurn 
-					// mientras jeuga la pc
-				// setTimeout(() => {
-				// 	computerTurn(tictactoe);
-				// }, 3000);
-
-                computerTurn(tictactoe);
-		    }
-        }
+		if (tictactoe.turn === 'h'){
+			if (!tictactoe.isBusy(row, column)){
+				tictactoe.addTile(tictactoe.humanTile, row, column);
+				tictactoe.played += 1;
+				displayCell(cell, tictactoe.humanTile);
+				
+				if(tictactoe.isFinished()){
+					updateScoreboard('h');
+					tictactoe.reset(tictactoe.humanTile, 'h');
+					cleanCells();
+					displayTurn(tictactoe);
+					displayScoreboard();
+				} else {
+					tictactoe.changeTurn();
+					displayTurn(tictactoe);
+					
+					setTimeout(() => {
+						computerTurn(tictactoe);
+					}, 2000);
+				}
+			}
+		}
     }
 }
 
@@ -303,6 +300,23 @@ function displayTurn(tictactoe){
 	display.textContent = 'Turn: ' + tictactoe.turn;
 }
 
+function showData(){
+	var hum = document.getElementById("hum");
+    var comp = document.getElementById("comp");
+    var turn = document.getElementById("turn");
+    var scoreboard = document.getElementsByClassName('scoreboard')[0];
+	var restartGame = document.getElementsByClassName('restartGame')[0];
+    
+    hum.textContent = "Human play to " + tictactoe.humanTile;
+    comp.textContent = "Computer play to " + tictactoe.computerTile; 
+    turn.textContent = "Turn " + tictactoe.turn;
+	
+	players.style.display = "block";
+    turn.style.display = "block";
+    scoreboard.style.display = "block";
+	restartGame.style.display = "block";
+}
+
 function chooseTile(tileType){
 
     tictactoe = new Tictactoe(tileType, 'h');
@@ -319,24 +333,7 @@ function chooseTile(tileType){
     //ocultar selección de ficha
     var tile = document.getElementById("tile");
     tile.style.display = "none";
-    
-
 	
-    //mostrar jugadores, turno y scoreboard
-    var hum = document.getElementById("hum");
-    var comp = document.getElementById("comp");
-    var turn = document.getElementById("turn");
-    var scoreboard = document.getElementsByClassName('scoreboard')[0];
-	// var restartGame = document.getElementsByClassName('estartGame')[0];
-    
-    hum.textContent = "Human play to " + tictactoe.humanTile;
-    comp.textContent = "Computer play to " + tictactoe.computerTile; 
-    turn.textContent = "Turn " + tictactoe.turn;
-	
-    players.style.display = "block";
-    turn.style.display = "block";
-    scoreboard.style.display = "block";
-	// restartGame.style.display = "block";
-    
+	showData()
     displayScoreboard();
 }

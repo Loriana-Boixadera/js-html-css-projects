@@ -76,10 +76,18 @@ h1, h3 {
     margin-left: 30px;
 }
 
-/* 
+
 .restartGame {
     display: none;
     color:#fff;
     text-align: right;
     margin-right: 30px;
-} */
+}
+
+.restartGame a {
+    background: #8f746c;
+    padding: 10px;
+    border: 2px solid;
+    margin: 10px auto;
+    cursor: pointer;
+}
